@@ -1,7 +1,6 @@
 absl-py==2.1.0
 accelerate==0.27.2
 annotated-types==0.6.0
-apex==0.1  # Install manually via https://github.com/NVIDIA/apex
 argon2-cffi==23.1.0
 attrs==23.2.0
 beautifulsoup4==4.12.3
