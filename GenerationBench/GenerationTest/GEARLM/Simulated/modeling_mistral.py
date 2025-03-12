@@ -28,7 +28,12 @@ import torch.nn.functional as F
 import torch.utils.checkpoint
 from torch import nn
 from torch.nn import BCEWithLogitsLoss, CrossEntropyLoss, MSELoss
-from .compress_function import compress_insert_function, H2OCache
+from .compress_function import compress_insert_function
+
+def H2OCache(n):
+    print("H2OCache called with value: ", n)
+    return []
+
 from transformers.activations import ACT2FN
 from .cache_utils import Cache, DynamicCache
 from transformers.modeling_attn_mask_utils import (
