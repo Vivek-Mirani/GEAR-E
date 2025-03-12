@@ -56,7 +56,11 @@ from transformers.utils import (
 )
 from transformers.utils.import_utils import is_torch_fx_available
 from transformers.models.llama.configuration_llama import LlamaConfig
-from .compress_function import compress_insert_function, H2OCache
+from .compress_function import compress_insert_function
+
+def H2OCache(n):
+    print("H2OCache called with value: ", n)
+    return []
 
 if is_flash_attn_2_available():
     from flash_attn import flash_attn_func, flash_attn_varlen_func
