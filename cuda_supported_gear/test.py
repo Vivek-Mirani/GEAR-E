@@ -37,8 +37,8 @@ compress_config["rankv"] = 2 ## prefill rank
 compress_config["loop"] = 3
 # compress_config["stream_list"] = stream_list
 stream_list = [torch.cuda.Stream(),torch.cuda.Stream()]
-print(args.model)
-if "gearl" in args.model:
+print(args.compress_method)
+if "gearl" in args.compress_method:
     print(1)
     model = LlamaForCausalLM_GEARKIVI.from_pretrained(
         "meta-llama/Llama-2-7b-hf",
