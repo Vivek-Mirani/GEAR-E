@@ -20,6 +20,7 @@ config.residual_length = 64 # the number of recent fp16 tokens
 parser = argparse.ArgumentParser(description="Evaluate AQuA Tasks")
 parser.add_argument("--batch_size", type=int, default=8, help="Batch size.")
 parser.add_argument("--model", type=str, default="meta-llama/Llama-2-7b", help="Model name or path.")
+parser.add_argument("--compress_method", type=str, default="gearlKIVI", help="Type of compression method.")
 args = parser.parse_args()
 
 max_token = 1000 ### prefill_length
@@ -28,7 +29,7 @@ batch_size = args.batch_size
 
 ##### Config for 
 compress_config = {}
-compress_config["compress_method"] = "gearlKIVI" # "gearlKIVI" "gearsKIVI"
+compress_config["compress_method"] = args.compress_method #"gearlKIVI" # "gearlKIVI" "gearsKIVI"
 compress_config["group_size"] = 64
 compress_config["residual"] = 64
 compress_config["quantize_bit"] = 2
@@ -47,7 +48,7 @@ if "gearl" in args.compress_method:
         compress_config = compress_config,
         device_map = "cuda:0"
     )
-elif "KIVI" in args.model:
+elif "KIVI" in args.compress_method:
     print(2)
     model = LlamaForCausalLM_KIVI.from_pretrained(
         "meta-llama/Llama-2-7b-hf",
@@ -57,7 +58,7 @@ elif "KIVI" in args.model:
         
         device_map = "cuda:0"
     )
-elif "None" in args.model:
+elif "None" in args.compress_method:
     print(3)
     model = LlamaForCausalLM.from_pretrained(
     "meta-llama/Llama-2-7b-hf",
