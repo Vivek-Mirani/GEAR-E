@@ -37,8 +37,9 @@ compress_config["rankv"] = 2 ## prefill rank
 compress_config["loop"] = 3
 # compress_config["stream_list"] = stream_list
 stream_list = [torch.cuda.Stream(),torch.cuda.Stream()]
-
+print(args.model)
 if "gearl" in args.model:
+    print(1)
     model = LlamaForCausalLM_GEARKIVI.from_pretrained(
         "meta-llama/Llama-2-7b-hf",
         config = config,
@@ -47,6 +48,7 @@ if "gearl" in args.model:
         device_map = "cuda:0"
     )
 elif "KIVI" in args.model:
+    print(2)
     model = LlamaForCausalLM_KIVI.from_pretrained(
         "meta-llama/Llama-2-7b-hf",
         config = config,
@@ -56,6 +58,7 @@ elif "KIVI" in args.model:
         device_map = "cuda:0"
     )
 elif "None" in args.model:
+    print(3)
     model = LlamaForCausalLM.from_pretrained(
     "meta-llama/Llama-2-7b-hf",
 
