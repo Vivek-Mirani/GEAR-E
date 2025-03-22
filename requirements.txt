@@ -49,13 +49,13 @@ matplotlib-inline==0.1.6
 murmurhash==1.0.10
 networkx==2.6.3
 ninja==1.11.1.1
-numpy==1.24.4
+numpy
 oauthlib==3.2.2
 onnx==1.15.0  # Install ONNX manually for Windows
 opencv-python==4.8.0.76
 optree==0.10.0
 pandas==2.1.1
-pillow==9.5.0
+pillow
 protobuf==4.24.4
 psutil==5.9.6
 pydantic==2.5.3
