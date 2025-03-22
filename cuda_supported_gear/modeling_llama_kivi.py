@@ -13,6 +13,14 @@ from transformers.models.llama.configuration_llama import *
 from transformers.models.llama.modeling_llama import *
 from transformers.modeling_attn_mask_utils import _prepare_4d_causal_attention_mask
 from transformers.utils import add_start_docstrings_to_model_forward
+from transformers.modeling_outputs import (
+    BaseModelOutputWithPast,
+    CausalLMOutputWithPast,
+    SequenceClassifierOutputWithPast,
+    MoeCausalLMOutputWithPast,
+    MoeModelOutputWithPast,
+)
+
 LLAMA_INPUTS_DOCSTRING = r"""
     Args:
         input_ids (`torch.LongTensor` of shape `(batch_size, sequence_length)`):
