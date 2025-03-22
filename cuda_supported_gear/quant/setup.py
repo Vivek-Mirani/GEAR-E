@@ -35,8 +35,8 @@ setup(
         CUDAExtension(
             name="kivi_gemv",
             sources=[
-                "csrc/pybind.cpp", 
-                "csrc/gemv_cuda.cu"
+                "cuda_supported_gear/quant/csrc/pybind.cpp", 
+                "cuda_supported_gear/quant/csrc/gemv_cuda.cu"
             ],
             extra_compile_args=extra_compile_args,
         ),
