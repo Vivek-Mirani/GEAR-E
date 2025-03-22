@@ -12,6 +12,7 @@ from quant.matmul import cuda_bmm_fA_qB_outer
 from transformers.models.llama.configuration_llama import *
 from transformers.models.llama.modeling_llama import *
 from transformers.modeling_attn_mask_utils import _prepare_4d_causal_attention_mask
+from transformers.utils import add_start_docstrings_to_model_forward
 
 _CONFIG_FOR_DOC = "LlamaConfig"
 def if_not_then_None(variable):
