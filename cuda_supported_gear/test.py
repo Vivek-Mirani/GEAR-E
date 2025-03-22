@@ -7,10 +7,6 @@ from datasets import load_dataset
 import torch
 import argparse
 
-config.k_bits = 2# current support 2/4 bit for KV Cache
-config.v_bits = 2 # current support 2/4 bit for KV Cache
-config.group_size = 64
-config.residual_length = 64 # the number of recent fp16 tokens
 
 # quantization_config = BitsAndBytesConfig(load_in_8bit=True)
 parser = argparse.ArgumentParser(description="Evaluate AQuA Tasks")
@@ -25,6 +21,11 @@ batch_size = args.batch_size
 
 #### Config for KIVI model
 config = LlamaConfig.from_pretrained(args.model)
+config.k_bits = 2# current support 2/4 bit for KV Cache
+config.v_bits = 2 # current support 2/4 bit for KV Cache
+config.group_size = 64
+config.residual_length = 64 # the number of recent fp16 tokens
+
 
 ##### Config for 
 compress_config = {}
