@@ -7,10 +7,6 @@ from datasets import load_dataset
 import torch
 import argparse
 
-
-#### Config for KIVI model
-config = LlamaConfig.from_pretrained("meta-llama/Llama-2-7b-hf")
-
 config.k_bits = 2# current support 2/4 bit for KV Cache
 config.v_bits = 2 # current support 2/4 bit for KV Cache
 config.group_size = 64
@@ -27,6 +23,9 @@ max_token = 1000 ### prefill_length
 max_generation_length = 1500 ### geneate 500
 batch_size = args.batch_size
 
+#### Config for KIVI model
+config = LlamaConfig.from_pretrained(args.model)
+
 ##### Config for 
 compress_config = {}
 compress_config["compress_method"] = args.compress_method #"gearlKIVI" # "gearlKIVI" "gearsKIVI"
@@ -38,40 +37,30 @@ compress_config["rankv"] = 2 ## prefill rank
 compress_config["loop"] = 3
 # compress_config["stream_list"] = stream_list
 stream_list = [torch.cuda.Stream(),torch.cuda.Stream()]
-print(args)
 if "gearl" in args.compress_method:
-    print(1)
     model = LlamaForCausalLM_GEARKIVI.from_pretrained(
-        "meta-llama/Llama-2-7b-hf",
+        args.model,
         config = config,
         # quantization_config = quantization_config,
         compress_config = compress_config,
         device_map = "cuda:0"
     )
 elif "KIVI" in args.compress_method:
-    print(2)
     model = LlamaForCausalLM_KIVI.from_pretrained(
-        "meta-llama/Llama-2-7b-hf",
+        args.model,
         config = config,
         # quantization_config = quantization_config,
         # compress_config = compress_config,
-        
         device_map = "cuda:0"
     )
 elif "None" in args.compress_method:
-    print(3)
     model = LlamaForCausalLM.from_pretrained(
-    "meta-llama/Llama-2-7b-hf",
-
+    args.model,
     device_map = "cuda:0")
 model = model.half()
 
-
-
-
-
 tokenizer = AutoTokenizer.from_pretrained(
-    'meta-llama/Llama-2-7b-hf', 
+    args.model, 
     model_max_length=max_token,
     max_length=max_token,
     use_fast=False, 
