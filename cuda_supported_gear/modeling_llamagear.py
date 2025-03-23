@@ -872,8 +872,12 @@ class LlamaModel_GEAR(LlamaPreTrainedModel):
             raise ValueError("You have to specify either input_ids or inputs_embeds")
 
         past_key_values_length = 0
-        if past_key_values is not None:
+        # if past_key_values is not None:
+        #     past_key_values_length = past_key_values[0][8]
+        if past_key_values and len(past_key_values) > 0:
             past_key_values_length = past_key_values[0][8]
+        else:
+            past_key_values_length = 0  # Default to zero if cache is empty
 
         if position_ids is None:
             device = input_ids.device if input_ids is not None else inputs_embeds.device
