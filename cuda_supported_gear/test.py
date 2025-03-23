@@ -8,7 +8,7 @@ import torch
 import argparse
 
 
-# quantization_config = BitsAndBytesConfig(load_in_8bit=True)
+quantization_config = BitsAndBytesConfig(load_in_8bit=True)
 parser = argparse.ArgumentParser(description="Evaluate AQuA Tasks")
 parser.add_argument("--batch_size", type=int, default=8, help="Batch size.")
 parser.add_argument("--model", type=str, default="meta-llama/Llama-2-7b", help="Model name or path.")
@@ -42,7 +42,7 @@ if "gearl" in args.compress_method:
     model = LlamaForCausalLM_GEARKIVI.from_pretrained(
         args.model,
         config = config,
-        # quantization_config = quantization_config,
+        quantization_config = quantization_config,
         compress_config = compress_config,
         device_map = "cuda:0"
     )
@@ -50,7 +50,7 @@ elif "KIVI" in args.compress_method:
     model = LlamaForCausalLM_KIVI.from_pretrained(
         args.model,
         config = config,
-        # quantization_config = quantization_config,
+        quantization_config = quantization_config,
         # compress_config = compress_config,
         device_map = "cuda:0"
     )
