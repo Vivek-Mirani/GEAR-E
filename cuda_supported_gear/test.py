@@ -60,7 +60,7 @@ elif "None" in args.compress_method:
     device_map = "cuda:0")
 
 print(f"MODEL CONFIG: {model.config}")
-model = model.half()
+# model = model.half()
 
 tokenizer = AutoTokenizer.from_pretrained(
     args.model, 
