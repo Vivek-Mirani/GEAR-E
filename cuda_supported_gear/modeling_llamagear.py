@@ -488,7 +488,14 @@ class LlamaAttention_GEAR(nn.Module):
             kv_seq_len += past_key_value[8]
         cos, sin = self.rotary_emb(value_states, seq_len=kv_seq_len)
         query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin, position_ids)
-        assert self.num_key_value_groups == 1
+        
+        if hasattr(self, "num_key_value_groups"):
+            assert self.num_key_value_groups == 1
+        elif hasattr(self, "num_key_value_heads"):
+            assert self.num_key_value_heads == 1
+        else:
+            raise ValueError("Neither num_key_value_groups nor num_key_value_heads found in model config")
+        
         # [bsz, nh, t, hd]
         if past_key_value is not None:
             key_states_quant_trans = past_key_value[0]
