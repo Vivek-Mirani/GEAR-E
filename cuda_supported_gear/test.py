@@ -86,6 +86,7 @@ inputs = inputs.to("cuda:0")
 print(inputs.input_ids.shape)
 import time
 
+print(model.config.use_cache)
 start = time.time()
 result = model.generate(**inputs, max_length=max_generation_length, use_cache=True)
 torch.cuda.synchronize()
