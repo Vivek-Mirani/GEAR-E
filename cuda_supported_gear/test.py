@@ -65,8 +65,8 @@ tokenizer = AutoTokenizer.from_pretrained(
     model_max_length=max_token,
     max_length=max_token,
     use_fast=False, 
-    trust_remote_code=True, 
-    tokenizer_type='llama')
+    trust_remote_code=True)
+    #tokenizer_type='llama')
 tokenizer.pad_token = tokenizer.eos_token
 test = load_dataset("wikitext", "wikitext-2-raw-v1", split="train")
 text_combined = test["text"]
