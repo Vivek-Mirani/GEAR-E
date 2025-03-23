@@ -58,6 +58,8 @@ elif "None" in args.compress_method:
     model = LlamaForCausalLM.from_pretrained(
     args.model,
     device_map = "cuda:0")
+
+print(f"MODEL CONFIG: {model.config}")
 model = model.half()
 
 tokenizer = AutoTokenizer.from_pretrained(
@@ -86,7 +88,7 @@ inputs = inputs.to("cuda:0")
 print(inputs.input_ids.shape)
 import time
 
-print(f"MODEL CONFIG: {model.config}")
+# print(f"MODEL CONFIG: {model.config}")
 start = time.time()
 result = model.generate(**inputs, max_length=max_generation_length, use_cache=True)
 torch.cuda.synchronize()
