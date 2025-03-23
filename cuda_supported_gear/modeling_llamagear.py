@@ -1087,7 +1087,10 @@ class LlamaForCausalLM_GEARKIVI(LlamaPreTrainedModel):
         self, input_ids, past_key_values=None, attention_mask=None, inputs_embeds=None, **kwargs
     ):
         if past_key_values is not None:
-            past_length = past_key_values[0][8]
+            if past_key_values and len(past_key_values) > 0:
+                past_length = past_key_values[0][8]  # Access only if cache exists
+            else:
+                past_length = 0  # Default to 0 if no past_key_values exist
             # Some generation methods already pass only the last input ID
             if input_ids.shape[1] > past_length:
                 remove_prefix_length = past_length
