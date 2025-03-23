@@ -86,7 +86,7 @@ inputs = inputs.to("cuda:0")
 print(inputs.input_ids.shape)
 import time
 
-print(model.config.use_cache)
+print(f"num_key_value_groups: {model.config.num_key_value_groups}")
 start = time.time()
 result = model.generate(**inputs, max_length=max_generation_length, use_cache=True)
 torch.cuda.synchronize()
