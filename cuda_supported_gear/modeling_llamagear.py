@@ -917,7 +917,7 @@ class LlamaModel_GEAR(LlamaPreTrainedModel):
             if output_hidden_states:
                 all_hidden_states += (hidden_states,)
 
-            past_key_value = past_key_values[idx] if past_key_values is not None else None
+            past_key_value = past_key_values[idx] if past_key_values is not None and len(past_key_values) > 0 else None
 
             if self.gradient_checkpointing and self.training:
                 layer_outputs = self._gradient_checkpointing_func(
