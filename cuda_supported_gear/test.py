@@ -97,6 +97,6 @@ peak_memory = torch.cuda.max_memory_allocated(device="cuda") / (1024**2)  # è½¬æ
 
 print(f"Peak memory usage on GPU: {peak_memory} MB")
 print("time",end - start)
-# result = tokenizer.batch_decode(result, skip_special_tokens=True)
-# print(result)
+result = tokenizer.batch_decode(result, skip_special_tokens=True)
+print(result)
 # model = model.cuda()
