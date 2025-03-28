@@ -1,4 +1,3 @@
-#
 from modeling_llamagear import LlamaForCausalLM_GEARKIVI
 from modeling_llama_kivi import LlamaForCausalLM_KIVI
 from transformers import LlamaConfig, AutoTokenizer, LlamaForCausalLM
@@ -7,96 +6,96 @@ from datasets import load_dataset
 import torch
 import argparse
 
-
-quantization_config = BitsAndBytesConfig(load_in_8bit=True)
-parser = argparse.ArgumentParser(description="Evaluate AQuA Tasks")
+# Argument parser
+parser = argparse.ArgumentParser(description="Evaluate GSM8K Dataset")
 parser.add_argument("--batch_size", type=int, default=8, help="Batch size.")
 parser.add_argument("--model", type=str, default="meta-llama/Llama-2-7b", help="Model name or path.")
 parser.add_argument("--compress_method", type=str, default="gearlKIVI", help="Type of compression method.")
 args = parser.parse_args()
 
-max_token = 1000 ### prefill_length
-max_generation_length = 1500 ### geneate 500
+# Model and tokenization configuration
+quantization_config = BitsAndBytesConfig(load_in_8bit=True)
+max_token = 1000  # Prefill length
+max_generation_length = 1500  # Generate 500 tokens
 batch_size = args.batch_size
 
-#### Config for KIVI model
 config = LlamaConfig.from_pretrained(args.model)
-config.k_bits = 2# current support 2/4 bit for KV Cache
-config.v_bits = 2 # current support 2/4 bit for KV Cache
+config.k_bits = 2  # Current support: 2/4 bit for KV Cache
+config.v_bits = 2
 config.group_size = 64
-config.residual_length = 64 # the number of recent fp16 tokens
+config.residual_length = 64  # Number of recent fp16 tokens
 
+# Compression configuration
+compress_config = {
+    "compress_method": args.compress_method,
+    "group_size": 64,
+    "residual": 64,
+    "quantize_bit": 2,
+    "rank": 2,
+    "rankv": 2,
+    "loop": 3
+}
 
-##### Config for 
-compress_config = {}
-compress_config["compress_method"] = args.compress_method #"gearlKIVI" # "gearlKIVI" "gearsKIVI"
-compress_config["group_size"] = 64
-compress_config["residual"] = 64
-compress_config["quantize_bit"] = 2
-compress_config["rank"] = 2 ## prefill rank
-compress_config["rankv"] = 2 ## prefill rank
-compress_config["loop"] = 3
-# compress_config["stream_list"] = stream_list
-stream_list = [torch.cuda.Stream(),torch.cuda.Stream()]
+stream_list = [torch.cuda.Stream(), torch.cuda.Stream()]
 if "gearl" in args.compress_method:
     model = LlamaForCausalLM_GEARKIVI.from_pretrained(
         args.model,
-        config = config,
-        quantization_config = quantization_config,
-        compress_config = compress_config,
-        device_map = "cuda:0"
+        config=config,
+        quantization_config=quantization_config,
+        compress_config=compress_config,
+        device_map="cuda:0"
     )
 elif "KIVI" in args.compress_method:
     model = LlamaForCausalLM_KIVI.from_pretrained(
         args.model,
-        config = config,
-        quantization_config = quantization_config,
-        # compress_config = compress_config,
-        device_map = "cuda:0"
+        config=config,
+        quantization_config=quantization_config,
+        device_map="cuda:0"
     )
-elif "None" in args.compress_method:
+else:
     model = LlamaForCausalLM.from_pretrained(
-    args.model,
-    device_map = "cuda:0")
+        args.model,
+        device_map="cuda:0"
+    )
 
 print(f"MODEL CONFIG: {model.config}")
-# model = model.half()
 
+# Load tokenizer
 tokenizer = AutoTokenizer.from_pretrained(
-    args.model, 
+    args.model,
     model_max_length=max_token,
     max_length=max_token,
-    use_fast=False, 
-    trust_remote_code=True)
-    #tokenizer_type='llama')
-tokenizer.pad_token = tokenizer.eos_token
-test = load_dataset("wikitext", "wikitext-2-raw-v1", split="train")
-text_combined = test["text"]
-
-sentence_group = []
-for i in range(batch_size):
-    # sentence_group.append(str(text_combined[i*max_token:(i+1)*max_token]))
-    sentence_group.append(str(text_combined[0:max_token]))
-inputs = tokenizer(
-    sentence_group,
-    return_tensors="pt",
-    padding="max_length",
-    truncation=True,
+    use_fast=False,
+    trust_remote_code=True
 )
-print("begin")
-inputs = inputs.to("cuda:0")
-print(inputs.input_ids.shape)
-import time
+tokenizer.pad_token = tokenizer.eos_token
 
-# print(f"MODEL CONFIG: {model.config}")
-start = time.time()
-result = model.generate(**inputs, max_length=max_generation_length, use_cache=True)
-torch.cuda.synchronize()
-end = time.time()
-peak_memory = torch.cuda.max_memory_allocated(device="cuda") / (1024**2)  # 转换为MB单位
+# Load GSM8K dataset
+dataset = load_dataset("gsm8k", "main", split="test")
+questions = dataset["question"]
+answers = dataset["answer"]
 
-print(f"Peak memory usage on GPU: {peak_memory} MB")
-print("time",end - start)
-result = tokenizer.batch_decode(result, skip_special_tokens=True)
-print(result)
-# model = model.cuda()
+def evaluate_model():
+    correct = 0
+    total = 0
+    
+    for i in range(0, len(questions), batch_size):
+        batch_questions = questions[i:i+batch_size]
+        inputs = tokenizer(batch_questions, return_tensors="pt", padding=True, truncation=True).to("cuda:0")
+        
+        # Generate responses
+        with torch.no_grad():
+            outputs = model.generate(**inputs, max_length=max_generation_length, use_cache=True)
+        generated_texts = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+        
+        # Compare predictions to ground truth
+        for pred, actual in zip(generated_texts, answers[i:i+batch_size]):
+            if pred.strip() == actual.strip():
+                correct += 1
+            total += 1
+    
+    accuracy = correct / total * 100
+    print(f"Final Accuracy: {accuracy:.2f}%")
+
+# Run evaluation
+evaluate_model()
