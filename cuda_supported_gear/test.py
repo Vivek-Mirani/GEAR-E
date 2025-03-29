@@ -5,18 +5,20 @@ from transformers import BitsAndBytesConfig
 from datasets import load_dataset
 import torch
 import argparse
+import time
+import re
 
 # Argument parser
 parser = argparse.ArgumentParser(description="Evaluate GSM8K Dataset")
 parser.add_argument("--batch_size", type=int, default=8, help="Batch size.")
-parser.add_argument("--model", type=str, default="meta-llama/Llama-2-7b", help="Model name or path.")
+parser.add_argument("--model", type=str, default="meta-llama/Llama-3B", help="Model name or path.")
 parser.add_argument("--compress_method", type=str, default="gearlKIVI", help="Type of compression method.")
 args = parser.parse_args()
 
 # Model and tokenization configuration
 quantization_config = BitsAndBytesConfig(load_in_8bit=True)
 max_token = 1000  # Prefill length
-max_generation_length = 1500  # Generate 500 tokens
+max_generation_length = 500  # Generate up to 500 tokens
 batch_size = args.batch_size
 
 config = LlamaConfig.from_pretrained(args.model)
@@ -36,7 +38,7 @@ compress_config = {
     "loop": 3
 }
 
-stream_list = [torch.cuda.Stream(), torch.cuda.Stream()]
+# Model selection
 if "gearl" in args.compress_method:
     model = LlamaForCausalLM_GEARKIVI.from_pretrained(
         args.model,
@@ -75,6 +77,11 @@ dataset = load_dataset("gsm8k", "main", split="test")
 questions = dataset["question"]
 answers = dataset["answer"]
 
+def extract_number(text):
+    """Extract numerical answer from model output."""
+    match = re.search(r"([-+]?\d*\.?\d+)", text)
+    return match.group(1) if match else ""
+
 def evaluate_model():
     correct = 0
     total = 0
@@ -83,16 +90,26 @@ def evaluate_model():
         batch_questions = questions[i:i+batch_size]
         inputs = tokenizer(batch_questions, return_tensors="pt", padding=True, truncation=True).to("cuda:0")
         
+        torch.cuda.reset_peak_memory_stats()
+        start_time = time.time()
+        
         # Generate responses
         with torch.no_grad():
-            outputs = model.generate(**inputs, max_length=max_generation_length, use_cache=True)
+            outputs = model.generate(**inputs, max_length=max_generation_length, temperature=0.0, do_sample=False)
+        
+        torch.cuda.synchronize()
+        end_time = time.time()
+        
         generated_texts = tokenizer.batch_decode(outputs, skip_special_tokens=True)
         
         # Compare predictions to ground truth
         for pred, actual in zip(generated_texts, answers[i:i+batch_size]):
-            if pred.strip() == actual.strip():
+            if extract_number(pred) == extract_number(actual):
                 correct += 1
             total += 1
+        
+        peak_memory = torch.cuda.max_memory_allocated() / (1024**2)
+        print(f"Batch {i//batch_size + 1}: Inference Time: {end_time - start_time:.4f} sec, Peak Memory: {peak_memory:.2f} MB")
     
     accuracy = correct / total * 100
     print(f"Final Accuracy: {accuracy:.2f}%")
