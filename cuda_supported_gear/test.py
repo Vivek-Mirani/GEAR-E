@@ -11,7 +11,7 @@ import re
 # Argument parser
 parser = argparse.ArgumentParser(description="Evaluate GSM8K Dataset")
 parser.add_argument("--batch_size", type=int, default=8, help="Batch size.")
-parser.add_argument("--model", type=str, default="meta-llama/Llama-3B", help="Model name or path.")
+parser.add_argument("--model", type=str, default="meta-llama/meta-Llama-3-8B", help="Model name or path.")
 parser.add_argument("--compress_method", type=str, default="gearlKIVI", help="Type of compression method.")
 args = parser.parse_args()
 
