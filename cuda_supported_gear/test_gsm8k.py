@@ -145,7 +145,7 @@ if __name__ == "__main__":
     # stream_list = [torch.cuda.Stream(), torch.cuda.Stream()] # If needed by GEAR
     # compress_config["stream_list"] = stream_list              # If needed by GEAR
 
-    # quantization_config = BitsAndBytesConfig(load_in_8bit=True) # Optional: If needed
+    quantization_config = BitsAndBytesConfig(load_in_8bit=True) # Optional: If needed
 
 
     # --- Load Model Based on args.model (Original Logic) ---
@@ -157,7 +157,7 @@ if __name__ == "__main__":
             args.model_base_path,
             config=config, # Pass the potentially modified KIVI config
             compress_config=compress_config,
-            # quantization_config = quantization_config, # Optional
+            quantization_config = quantization_config, # Optional
             device_map="auto", # Changed from "cuda:0" for flexibility
             torch_dtype=torch.float16, # Use float16
             token=args.hf_token
@@ -168,7 +168,7 @@ if __name__ == "__main__":
             args.model_base_path,
             config=config, # Pass the modified KIVI config
             # compress_config=compress_config, # KIVI doesn't take compress_config directly here
-            # quantization_config = quantization_config, # Optional
+            quantization_config = quantization_config, # Optional
             device_map="auto", # Changed from "cuda:0" for flexibility
             torch_dtype=torch.float16, # Use float16
             token=args.hf_token
@@ -182,7 +182,7 @@ if __name__ == "__main__":
             device_map="auto", # Changed from "cuda:0"
             torch_dtype=torch.float16, # Use float16
             token=args.hf_token
-            # quantization_config=quantization_config, # Optional
+            quantization_config=quantization_config, # Optional
         )
     else:
         raise ValueError(f"Unknown model type specified: {args.model}. Use 'gearl', 'KIVI', or 'None'.")
