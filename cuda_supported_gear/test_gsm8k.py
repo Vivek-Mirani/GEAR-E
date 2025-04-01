@@ -181,7 +181,7 @@ if __name__ == "__main__":
             args.model_base_path,
             device_map="auto", # Changed from "cuda:0"
             torch_dtype=torch.float16, # Use float16
-            token=args.hf_token
+            token=args.hf_token,
             quantization_config=quantization_config, # Optional
         )
     else:
