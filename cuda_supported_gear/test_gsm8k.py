@@ -218,6 +218,7 @@ if __name__ == "__main__":
         try:
             with open(args.prompt_file, "r", encoding="utf-8") as f:
                 prompt_template = f.read()
+                print(prompt_template)
         except FileNotFoundError:
             logging.error(f"Prompt file not found: {args.prompt_file}. Exiting.")
             sys.exit(1)
