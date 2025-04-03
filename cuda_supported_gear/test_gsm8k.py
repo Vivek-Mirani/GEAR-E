@@ -280,7 +280,7 @@ if __name__ == "__main__":
             # Generate responses
             # Ensure generate is called with inputs compatible with the specific model class
             outputs = model.generate(**inputs, **generate_kwargs)
-
+            print(outputs)
             # Decode generated tokens, skipping the prompt part
             input_token_len = inputs.input_ids.shape[1]
             # Handle potential variations in output format if custom models differ
