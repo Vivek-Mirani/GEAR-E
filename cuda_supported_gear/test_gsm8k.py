@@ -293,7 +293,6 @@ if __name__ == "__main__":
                 output_sequences[:, input_token_len:],
                 skip_special_tokens=True
             )
-            print(generations_raw)
           
             # Evaluate each sample in the batch
             for i in range(len(questions)):
@@ -306,6 +305,8 @@ if __name__ == "__main__":
                 if is_correct:
                     total_correct += 1
                 total_evaluated += 1
+
+                print("question:", question, "\ngeneration:", generation, "\nanswer:", answer, "\npredicted_value:", pred_val, "\ngold_value:", gold_val, "\nis_correct:", is_correct)
 
                 all_samples_results.append({
                     "question": question,
