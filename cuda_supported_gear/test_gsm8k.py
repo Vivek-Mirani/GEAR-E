@@ -144,18 +144,18 @@ if __name__ == "__main__":
     compress_config["loop"] = args.gear_loop
     # stream_list = [torch.cuda.Stream(), torch.cuda.Stream()] # If needed by GEAR
     # compress_config["stream_list"] = stream_list              # If needed by GEAR
-
-    # quantization_config = BitsAndBytesConfig(load_in_8bit=True) # Optional: If needed
-    compute_dtype = getattr(torch, "bfloat16", torch.float16) # Fallback to float16 if bfloat16 not available
-    logging.info(f"Using compute dtype: {compute_dtype}")
     
-    quantization_config = BitsAndBytesConfig(
-        load_in_4bit=True,                     # Enable 4-bit quantization
-        bnb_4bit_quant_type="nf4",             # Use NF4 quantization type
-        bnb_4bit_compute_dtype=compute_dtype,  # Set compute dtype (bf16 or fp16)
-        bnb_4bit_use_double_quant=True,        # Enable double quantization
-    )
-    logging.info("Using 4-bit NF4 quantization with double quantization.")
+    quantization_config = BitsAndBytesConfig(load_in_8bit=True) # Optional: If needed
+    # compute_dtype = getattr(torch, "bfloat16", torch.float16) # Fallback to float16 if bfloat16 not available
+    # logging.info(f"Using compute dtype: {compute_dtype}")
+    
+    # quantization_config = BitsAndBytesConfig(
+    #     load_in_4bit=True,                     # Enable 4-bit quantization
+    #     bnb_4bit_quant_type="nf4",             # Use NF4 quantization type
+    #     bnb_4bit_compute_dtype=compute_dtype,  # Set compute dtype (bf16 or fp16)
+    #     bnb_4bit_use_double_quant=True,        # Enable double quantization
+    # )
+    # logging.info("Using 4-bit NF4 quantization with double quantization.")
 
     # --- Load Model Based on args.model (Original Logic) ---
     logging.info(f"Loading model: {args.model_base_path} with type: {args.model}")
