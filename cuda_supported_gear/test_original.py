@@ -60,7 +60,7 @@ elif "None" in args.model:
     model = LlamaForCausalLM.from_pretrained(
     "meta-llama/Llama-2-7b-hf",
     device_map = "cuda:0")
-model = model.half()
+# model = model.half()
 
 
 
