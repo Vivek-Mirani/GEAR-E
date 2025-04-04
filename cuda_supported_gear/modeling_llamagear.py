@@ -436,7 +436,7 @@ class LlamaAttention_GEAR(nn.Module):
                 base=self.rope_theta,
             )
         else:
-            self.config.rope_scaling["type"]="linear"
+            self.config.rope_scaling["type"]="dynamic"
             scaling_type = self.config.rope_scaling["type"]
             scaling_factor = self.config.rope_scaling["factor"]
             if scaling_type == "linear":
