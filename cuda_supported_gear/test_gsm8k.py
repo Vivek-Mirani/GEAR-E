@@ -105,7 +105,7 @@ if __name__ == "__main__":
     parser.add_argument("--gear_rank", type=int, default=2, help="Prefill rank K for GEAR.")
     parser.add_argument("--gear_rankv", type=int, default=2, help="Prefill rank V for GEAR.")
     parser.add_argument("--gear_loop", type=int, default=3, help="Loop parameter for GEAR.")
-
+    parser.add_argument("--sparsity", type=float, default=0.0, help="Sparsity level for GEAR outlier handling (e.g., 0.02 for 2%).")
 
     args = parser.parse_args()
 
@@ -142,6 +142,7 @@ if __name__ == "__main__":
     compress_config["rank"] = args.gear_rank
     compress_config["rankv"] = args.gear_rankv
     compress_config["loop"] = args.gear_loop
+    compress_config["sparsity"] = args.sparsity
     # stream_list = [torch.cuda.Stream(), torch.cuda.Stream()] # If needed by GEAR
     # compress_config["stream_list"] = stream_list              # If needed by GEAR
     
@@ -160,6 +161,8 @@ if __name__ == "__main__":
     # --- Load Model Based on args.model (Original Logic) ---
     logging.info(f"Loading model: {args.model_base_path} with type: {args.model}")
     model = None
+    if "gearsl" in args.model:
+        logging.info("GEAR called. Need to create new class for GEAR similar to LlamaForCausalLM_GEARKIVI.")
     if "gearl" in args.model:
         logging.info("Loading LlamaForCausalLM_GEARKIVI model with GEAR config.")
         model = LlamaForCausalLM_GEARKIVI.from_pretrained(
