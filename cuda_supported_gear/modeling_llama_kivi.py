@@ -925,7 +925,7 @@ class LlamaForCausalLM_KIVI(LlamaPreTrainedModel):
     ):
         if past_key_values is not None:
             if past_key_values and len(past_key_values) > 0:
-                past_length = past_key_values[0][8]  # Access only if cache exists
+                past_length = past_key_values[0][-1]  # Access only if cache exists
             else:
                 past_length = 0  # Default to 0 if no past_key_values exist
             # Some generation methods already pass only the last input ID
