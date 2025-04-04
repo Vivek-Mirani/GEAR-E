@@ -104,6 +104,7 @@ def evaluate_model():
         
         # Compare predictions to ground truth
         for pred, actual in zip(generated_texts, answers[i:i+batch_size]):
+            print("Pred: ", pred, "\nActual: ", actual)
             if extract_number(pred) == extract_number(actual):
                 correct += 1
             total += 1
