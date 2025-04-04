@@ -19,7 +19,8 @@ config.residual_length = 64 # the number of recent fp16 tokens
 quantization_config = BitsAndBytesConfig(load_in_8bit=True)
 parser = argparse.ArgumentParser(description="Evaluate AQuA Tasks")
 parser.add_argument("--batch_size", type=int, default=8, help="Batch size.")
-parser.add_argument("--model", type=str, default="meta-llama/Llama-2-7b-hf", help="Model name or path.")
+parser.add_argument("--model", type=str, default="None", help="Model name or path.")
+parser.add_argument("--model_base_path", type=str, default="meta-llama/Llama-2-7b-hf", help="Model name or path.")
 args = parser.parse_args()
 
 max_token = 1000 ### prefill_length
@@ -58,7 +59,6 @@ elif "KIVI" in args.model:
 elif "None" in args.model:
     model = LlamaForCausalLM.from_pretrained(
     "meta-llama/Llama-2-7b-hf",
-
     device_map = "cuda:0")
 model = model.half()
 
