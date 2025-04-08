@@ -145,8 +145,10 @@ if __name__ == "__main__":
     compress_config["sparsity"] = args.sparsity
     # stream_list = [torch.cuda.Stream(), torch.cuda.Stream()] # If needed by GEAR
     # compress_config["stream_list"] = stream_list              # If needed by GEAR
-    
-    quantization_config = BitsAndBytesConfig(load_in_8bit=True) # Optional: If needed
+
+    # 8 BIT QUANTIZATION OF MODEL
+    # quantization_config = BitsAndBytesConfig(load_in_8bit=True) # Optional: If needed
+  
     # compute_dtype = getattr(torch, "bfloat16", torch.float16) # Fallback to float16 if bfloat16 not available
     # logging.info(f"Using compute dtype: {compute_dtype}")
     
