@@ -539,6 +539,7 @@ class LlamaAttention(nn.Module):
         ).transpose(1, 2)
 
         kv_seq_len = key_states.shape[-2]
+        
         if past_key_value is not None:
             if self.layer_idx is None:
                 raise ValueError(
@@ -903,6 +904,7 @@ class LlamaSdpaAttention(LlamaAttention):
         output_attentions: bool = False,
         use_cache: bool = False,
     ) -> Tuple[torch.Tensor, Optional[torch.Tensor], Optional[Tuple[torch.Tensor]]]:
+        # print(type(past_key_value))
         if output_attentions:
             # TODO: Improve this warning with e.g. `model.config.attn_implementation = "manual"` once this is implemented.
             logger.warning_once(
@@ -943,6 +945,7 @@ class LlamaSdpaAttention(LlamaAttention):
             query_states, key_states, cos, sin, position_ids
         )
         bsz, num_heads, q_len, head_dim = query_states.shape
+
         if q_len > 1:
             self.prefill = True
         if past_key_value is not None:
@@ -1007,7 +1010,9 @@ class LlamaSdpaAttention(LlamaAttention):
                                 residual_key = past_key[:, :, fixed_length:, :]
                                 residual_value = past_value[:, :, fixed_length:, :]
                                 past_key, past_value = past_key[:,:,:fixed_length,:], past_value[:,:,:fixed_length,:]
-                            # not streaming compress is compress every geneartion
+                            # not streaming compress is compress every generation
+                            # print("Compressing shape:", past_key.shape)
+
                             (
                                 past_key,
                                 past_value,
@@ -1037,6 +1042,7 @@ class LlamaSdpaAttention(LlamaAttention):
         key_states = repeat_kv(key_states, self.num_key_value_groups)
         value_states = repeat_kv(value_states, self.num_key_value_groups)
 
+        print(attention_mask.size())
         if attention_mask is not None:
             if attention_mask.size() != (bsz, 1, q_len, kv_seq_len):
                 raise ValueError(
@@ -1619,8 +1625,11 @@ class SimulatedGearLlamaForCausalLM(LlamaPreTrainedModel):
                 cache_length = past_key_values.get_seq_length()
                 past_length = past_key_values.seen_tokens
                 max_cache_length = past_key_values.get_max_length()
-            else:
+            elif len(past_key_values) > 0:
                 cache_length = past_length = past_key_values[0][0].shape[2]
+                max_cache_length = None
+            else:
+                cache_length = past_length = 0
                 max_cache_length = None
 
             # Keep only the unprocessed tokens:

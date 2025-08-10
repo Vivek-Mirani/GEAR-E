@@ -35,9 +35,9 @@ class Cache:
 
     def get_seq_length(self, layer_idx: Optional[int] = 0) -> int:
         """Returns the sequence length of the cached states. A layer index can be optionally passed."""
-        raise NotImplementedError(
-            "Make sure to implement `get_seq_length` in a subclass."
-        )
+        if len(self.key_cache) <= layer_idx:
+            return 0
+        return self.key_cache[layer_idx].shape[-2]
 
     def get_max_length(self) -> Optional[int]:
         """Returns the maximum sequence length of the cached states, if there is any."""
@@ -54,6 +54,7 @@ class Cache:
         #   length, we will need to evict part of the cache (and thus not all cache is usable)
         max_length = self.get_max_length()
         previous_seq_length = self.get_seq_length(layer_idx)
+        # print(previous_seq_length)
         if max_length is not None and previous_seq_length + new_seq_length > max_length:
             return max_length - new_seq_length
         return previous_seq_length
@@ -165,6 +166,7 @@ class DynamicCache(Cache):
     def get_max_length(self) -> Optional[int]:
         """Returns the maximum sequence length of the cached states. DynamicCache does not have a maximum length."""
         return None
+
 
     def reorder_cache(self, beam_idx: torch.LongTensor):
         """Reorders the cache for beam search, given the selected beam indices."""

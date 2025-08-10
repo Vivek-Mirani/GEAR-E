@@ -438,6 +438,10 @@ class LlamaAttention(nn.Module):
                 "Passing `padding_mask` is deprecated and will be removed in v4.37. Please make sure use `attention_mask` instead.`"
             )
         bsz, q_len, _ = hidden_states.size()
+        # if past_key_value is None:
+        #     past_key_value = DynamicCache()
+        # elif not isinstance(past_key_value, DynamicCache):
+        #     past_key_value = DynamicCache.from_legacy_cache(past_key_value)
         if self.config.pretraining_tp > 1:
             key_value_slicing = (
                 self.num_key_value_heads * self.head_dim
@@ -488,6 +492,8 @@ class LlamaAttention(nn.Module):
                     "for auto-regressive decoding with k/v caching, please make sure to initialize the attention class "
                     "with a layer index."
                 )
+            # print(f"KV sequence length: {kv_seq_len}")
+            # print(f"Past key value usable length: ", past_key_value.get_usable_length(kv_seq_len, self.layer_idx))
             kv_seq_len += past_key_value.get_usable_length(kv_seq_len, self.layer_idx)
         cos, sin = self.rotary_emb(value_states, seq_len=kv_seq_len)
         query_states, key_states = apply_rotary_pos_emb(
@@ -497,6 +503,7 @@ class LlamaAttention(nn.Module):
         if past_key_value is not None:
             # TODO : add compress_config and compress functions
             # cache_kwargs = {"sin": sin, "cos": cos}  # Specific to RoPE models
+            # print("Compress config: ", self.compress_config)
             cache_kwargs = (
                 self.compress_config if self.compress_config is not None else {}
             )
@@ -506,6 +513,7 @@ class LlamaAttention(nn.Module):
                 key_states, value_states, self.layer_idx, cache_kwargs
             )
 
+        # print(key_states.shape)
         key_states = repeat_kv(key_states, self.num_key_value_groups)
         value_states = repeat_kv(value_states, self.num_key_value_groups)
         attn_weights = torch.matmul(
@@ -544,14 +552,14 @@ class LlamaAttention(nn.Module):
                 f"`attn_output` should be of size {(bsz, self.num_heads, q_len, self.head_dim)}, but is"
                 f" {attn_output.size()}"
             )
-
         attn_output = attn_output.transpose(1, 2).contiguous()
 
         attn_output = attn_output.reshape(bsz, q_len, self.hidden_size)
 
         if self.compress_config is not None:
             past_key_value.compress(self.layer_idx)
-            if self.compress_config["stream"] is True:
+            # print(type(past_key_value))
+            if self.compress_config.streaming is True:
                 past_key_value.increase_idx(self.layer_idx)
 
         if self.config.pretraining_tp > 1:
@@ -1217,7 +1225,7 @@ class LlamaModel(LlamaPreTrainedModel):
             # print(use_legacy_cache)
             if use_legacy_cache:
                 if self.compress_config is not None:
-                    if self.compress_config["stream"] is False:
+                    if self.compress_config.streaming is False:
                         past_key_values = CompressedCache.from_legacy_cache(
                             past_key_values
                         )
@@ -1480,16 +1488,28 @@ class GearLlamaForCausalLMNew(LlamaPreTrainedModel):
         inputs_embeds=None,
         **kwargs,
     ):
+        # if past_key_values is not None:
+        #     # print(past_key_values[0][0])
+        #     if isinstance(past_key_values, Cache):
+        #         cache_length = past_key_values.get_seq_length()
+        #         past_length = past_key_values.seen_tokens
+        #         max_cache_length = past_key_values.get_max_length()
+        #     else:
+
+        #         cache_length = past_length = past_key_values[0][0].shape[2]
+
+        #         max_cache_length = None
+
         if past_key_values is not None:
-            # print(past_key_values[0][0])
             if isinstance(past_key_values, Cache):
                 cache_length = past_key_values.get_seq_length()
                 past_length = past_key_values.seen_tokens
                 max_cache_length = past_key_values.get_max_length()
-            else:
-
+            elif len(past_key_values) > 0:
                 cache_length = past_length = past_key_values[0][0].shape[2]
-
+                max_cache_length = None
+            else:
+                cache_length = past_length = 0
                 max_cache_length = None
 
             # Keep only the unprocessed tokens:

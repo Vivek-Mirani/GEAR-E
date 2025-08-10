@@ -1,0 +1,1513 @@
+Q: not ( True ) and ( True ) is
+A_model:
+False
+A_target:
+False
+
+Q: True and not not ( not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: not True or False or ( False ) is
+A_model:
+False
+A_target:
+False
+
+Q: False or not ( True ) and False is
+A_model:
+False
+A_target:
+False
+
+Q: True or not False and True and False is
+A_model:
+ Remember that (i) expressions inside brackets are always evaluated first and that (ii) the order of operations from highest priority to lowest priority is "not", "and", "or", respectively.
+We first simplify this expression "Z" as follows: "Z = True or not False and True and False = A or B" where "A = True" and "B = not False and True and False".
+Let's evaluate A: A = True.
+Let's evaluate B: B = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and True and False = not False and
+A_target:
+True
+
+Q: False or not not not False and True is
+A_model:
+ Remember that (i) expressions inside brackets are always evaluated first and that (ii) the order of operations from highest priority to lowest priority is "not", "and", "or", respectively.
+We first simplify this expression "Z" as follows: "Z = False or not not not False and True = A or B" where "A = False" and "B = not not not False and True".
+Let's evaluate A: A = False.
+Let's evaluate B: B = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not False and True = not not not
+A_target:
+True
+
+Q: not True and ( False or True ) is
+A_model:
+False
+A_target:
+False
+
+Q: True and not False or ( True ) is
+A_model:
+True
+A_target:
+True
+
+Q: not True or ( False and True ) is
+A_model:
+False
+A_target:
+False
+
+Q: not True or ( True or False ) is
+A_model:
+True
+A_target:
+True
+
+Q: False or ( False ) and not False is
+A_model:
+False
+A_target:
+False
+
+Q: not False or True and False and False is
+A_model:
+True
+A_target:
+True
+
+Q: not True or False or not not True is
+A_model:
+True
+A_target:
+True
+
+Q: True and True and False and not True is
+A_model:
+False
+A_target:
+False
+
+Q: not not True and not True or True is
+A_model:
+True
+A_target:
+True
+
+Q: not not not ( True and False ) is
+A_model:
+True
+A_target:
+True
+
+Q: not not False and not not not False is
+A_model:
+False
+A_target:
+False
+
+Q: ( True and not True and False ) is
+A_model:
+False
+A_target:
+False
+
+Q: False and False and False or not False is
+A_model:
+True
+A_target:
+True
+
+Q: False or ( False and not False ) is
+A_model:
+False
+A_target:
+False
+
+Q: True and False or ( not True ) is
+A_model:
+False
+A_target:
+False
+
+Q: not not ( True ) and not False is
+A_model:
+True
+A_target:
+True
+
+Q: not False or ( True ) and True is
+A_model:
+True
+A_target:
+True
+
+Q: not ( True ) or False or True is
+A_model:
+True
+A_target:
+True
+
+Q: ( True and not not not True ) is
+A_model:
+True
+A_target:
+False
+
+Q: ( False or not False or False ) is
+A_model:
+True
+A_target:
+True
+
+Q: False and False or True and not False is
+A_model:
+True
+A_target:
+True
+
+Q: not not False or not False or True is
+A_model:
+True
+A_target:
+True
+
+Q: True and not True or False or True is
+A_model:
+True
+A_target:
+True
+
+Q: not False or True and False or False is
+A_model:
+True
+A_target:
+True
+
+Q: False and ( not False ) or False is
+A_model:
+False
+A_target:
+False
+
+Q: not not not not ( not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: ( True ) and True or not True is
+A_model:
+True
+A_target:
+True
+
+Q: not True or False and False and False is
+A_model:
+False
+A_target:
+False
+
+Q: not not not not not not not False is
+A_model:
+False
+A_target:
+True
+
+Q: not True or not False and not False is
+A_model:
+True
+A_target:
+True
+
+Q: False or True or False and not False is
+A_model:
+True
+A_target:
+True
+
+Q: not ( True or True ) and False is
+A_model:
+False
+A_target:
+False
+
+Q: not not not not True and not True is
+A_model:
+ Remember that (i) expressions inside brackets are always evaluated first and that (ii) the order of operations from highest priority to lowest priority is "not", "and", "or", respectively.
+We first simplify this expression "Z" as follows: "Z = not not not not True and not True = not not not not ( A ) and not ( B )" where "A = True" and "B = True".
+Let's evaluate A: A = True.
+Let's evaluate B: B = True.
+Plugging in A and B, we get: Z = not not not not ( A ) and not ( B ) = not not not not (True) and not (True) = not not not not True and not True = not not not not True and not True = not not not not True and not True = not not not not True and not True = not not not not True and not True = not not not not True and not True = not not not not True and not True = not not not not True and not True = not not not not True and not True = not not not not True and not True = not not not not True and not True = not not not not True and not True = not not not not True and
+A_target:
+False
+
+Q: ( False ) or False and not True is
+A_model:
+False
+A_target:
+False
+
+Q: ( False and True or not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: not not not ( False and True ) is
+A_model:
+True
+A_target:
+True
+
+Q: not not True and not False or True is
+A_model:
+True
+A_target:
+True
+
+Q: not False or True and not not True is
+A_model:
+True
+A_target:
+True
+
+Q: True or True or not False or False is
+A_model:
+True
+A_target:
+True
+
+Q: ( not False and False and False ) is
+A_model:
+False
+A_target:
+False
+
+Q: ( ( not True ) or True ) is
+A_model:
+True
+A_target:
+True
+
+Q: not not ( not False or True ) is
+A_model:
+True
+A_target:
+True
+
+Q: not True or False or ( True ) is
+A_model:
+True
+A_target:
+True
+
+Q: False or ( not False ) and True is
+A_model:
+True
+A_target:
+True
+
+Q: not False or False or ( False ) is
+A_model:
+True
+A_target:
+True
+
+Q: not not False or False and not True is
+A_model:
+False
+A_target:
+False
+
+Q: True or ( ( not True ) ) is
+A_model:
+True
+A_target:
+True
+
+Q: not False and not False and not False is
+A_model:
+True
+A_target:
+True
+
+Q: ( False ) and not False and True is
+A_model:
+False
+A_target:
+False
+
+Q: ( True ) and False or not False is
+A_model:
+True
+A_target:
+True
+
+Q: ( not False and ( True ) ) is
+A_model:
+True
+A_target:
+True
+
+Q: False or not ( False ) or True is
+A_model:
+True
+A_target:
+True
+
+Q: True and not False and not not True is
+A_model:
+True
+A_target:
+True
+
+Q: not True and True and True or False is
+A_model:
+False
+A_target:
+False
+
+Q: not not ( False and not True ) is
+A_model:
+True
+A_target:
+False
+
+Q: True or not ( ( False ) ) is
+A_model:
+True
+A_target:
+True
+
+Q: False or not True or False or False is
+A_model:
+False
+A_target:
+False
+
+Q: False or not not True or not False is
+A_model:
+True
+A_target:
+True
+
+Q: not ( True or True or False ) is
+A_model:
+False
+A_target:
+False
+
+Q: False or not not not not not False is
+A_model:
+False
+A_target:
+True
+
+Q: not ( False ) or not not True is
+A_model:
+True
+A_target:
+True
+
+Q: True and not False or False and False is
+A_model:
+True
+A_target:
+True
+
+Q: True or ( not ( True ) ) is
+A_model:
+True
+A_target:
+True
+
+Q: ( False or True and not True ) is
+A_model:
+True
+A_target:
+False
+
+Q: False or not True and True or True is
+A_model:
+True
+A_target:
+True
+
+Q: not not not not not not not True is
+A_model:
+True
+A_target:
+False
+
+Q: ( not False ) and False or True is
+A_model:
+True
+A_target:
+True
+
+Q: False and False or not ( True ) is
+A_model:
+False
+A_target:
+False
+
+Q: ( not False or True ) and True is
+A_model:
+True
+A_target:
+True
+
+Q: not ( False ) and ( False ) is
+A_model:
+False
+A_target:
+False
+
+Q: False or True and not not not False is
+A_model:
+True
+A_target:
+True
+
+Q: ( True ) and True and not True is
+A_model:
+False
+A_target:
+False
+
+Q: ( not True ) and True and False is
+A_model:
+False
+A_target:
+False
+
+Q: ( not not True and not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: True and ( False ) or not False is
+A_model:
+True
+A_target:
+True
+
+Q: not not not False or False and False is
+A_model:
+False
+A_target:
+True
+
+Q: not not not False and True or False is
+A_model:
+True
+A_target:
+True
+
+Q: True or ( True or not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: not False or ( ( False ) ) is
+A_model:
+True
+A_target:
+True
+
+Q: not not ( False and not False ) is
+A_model:
+True
+A_target:
+False
+
+Q: not not not not True or not True is
+A_model:
+False
+A_target:
+True
+
+Q: False and not ( False or False ) is
+A_model:
+False
+A_target:
+False
+
+Q: True and True and True or not False is
+A_model:
+True
+A_target:
+True
+
+Q: False or not False or True and True is
+A_model:
+True
+A_target:
+True
+
+Q: not False and False and False or False is
+A_model:
+False
+A_target:
+False
+
+Q: ( False ) or not False or True is
+A_model:
+True
+A_target:
+True
+
+Q: ( not False ) or ( True ) is
+A_model:
+True
+A_target:
+True
+
+Q: not not ( False or not True ) is
+A_model:
+True
+A_target:
+False
+
+Q: False or not False or False or False is
+A_model:
+True
+A_target:
+True
+
+Q: False or not False and ( False ) is
+A_model:
+True
+A_target:
+False
+
+Q: False or ( False ) or not True is
+A_model:
+False
+A_target:
+False
+
+Q: not True or False and True and True is
+A_model:
+False
+A_target:
+False
+
+Q: True or ( True or not True ) is
+A_model:
+True
+A_target:
+True
+
+Q: True and not False and True or True is
+A_model:
+True
+A_target:
+True
+
+Q: False or not False or not not True is
+A_model:
+True
+A_target:
+True
+
+Q: ( True or not False ) or False is
+A_model:
+True
+A_target:
+True
+
+Q: False or not ( True ) and True is
+A_model:
+False
+A_target:
+False
+
+Q: not False and not True and not False is
+A_model:
+True
+A_target:
+False
+
+Q: False and ( True and not False ) is
+A_model:
+False
+A_target:
+False
+
+Q: not False or ( False ) or True is
+A_model:
+True
+A_target:
+True
+
+Q: False and not ( False and True ) is
+A_model:
+False
+A_target:
+False
+
+Q: ( True or not not not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: False and ( False or not False ) is
+A_model:
+False
+A_target:
+False
+
+Q: False or not True or True and False is
+A_model:
+False
+A_target:
+False
+
+Q: True and not True or True and True is
+A_model:
+True
+A_target:
+True
+
+Q: ( not False or ( True ) ) is
+A_model:
+True
+A_target:
+True
+
+Q: ( ( not ( True ) ) ) is
+A_model:
+False
+A_target:
+False
+
+Q: False and False and not ( False ) is
+A_model:
+False
+A_target:
+False
+
+Q: not True and not True and not True is
+A_model:
+False
+A_target:
+False
+
+Q: not ( True or False ) or True is
+A_model:
+True
+A_target:
+True
+
+Q: False or ( True ) or not True is
+A_model:
+True
+A_target:
+True
+
+Q: False or False and False or not True is
+A_model:
+False
+A_target:
+False
+
+Q: True or False or not True or False is
+A_model:
+True
+A_target:
+True
+
+Q: not True and ( True and True ) is
+A_model:
+False
+A_target:
+False
+
+Q: not True and True or True and False is
+A_model:
+False
+A_target:
+False
+
+Q: not False or ( True or True ) is
+A_model:
+True
+A_target:
+True
+
+Q: not ( False or ( False ) ) is
+A_model:
+True
+A_target:
+True
+
+Q: not ( True or True ) and True is
+A_model:
+False
+A_target:
+False
+
+Q: False or not False or True or True is
+A_model:
+True
+A_target:
+True
+
+Q: False or False and not not not False is
+A_model:
+False
+A_target:
+False
+
+Q: not ( True or False or True ) is
+A_model:
+False
+A_target:
+False
+
+Q: ( False ) or not True and False is
+A_model:
+True
+A_target:
+False
+
+Q: True and True and not not not False is
+A_model:
+True
+A_target:
+True
+
+Q: ( True ) or True and not True is
+A_model:
+True
+A_target:
+True
+
+Q: False and False and not True and False is
+A_model:
+False
+A_target:
+False
+
+Q: ( True ) and not True or True is
+A_model:
+True
+A_target:
+True
+
+Q: not not not True and False and False is
+A_model:
+False
+A_target:
+False
+
+Q: False and False and not not not True is
+A_model:
+False
+A_target:
+False
+
+Q: False and False or False or not True is
+A_model:
+False
+A_target:
+False
+
+Q: False or ( not ( False ) ) is
+A_model:
+True
+A_target:
+True
+
+Q: not True and True and not not False is
+A_model:
+False
+A_target:
+False
+
+Q: ( False ) and ( not False ) is
+A_model:
+False
+A_target:
+False
+
+Q: ( not True ) and True or True is
+A_model:
+True
+A_target:
+True
+
+Q: False and True and ( not False ) is
+A_model:
+False
+A_target:
+False
+
+Q: ( ( True ) ) or not False is
+A_model:
+True
+A_target:
+True
+
+Q: not True and False or False or True is
+A_model:
+True
+A_target:
+True
+
+Q: True and not True and True and True is
+A_model:
+False
+A_target:
+False
+
+Q: ( True or True or not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: True or not False and True or True is
+A_model:
+True
+A_target:
+True
+
+Q: ( not ( False ) or False ) is
+A_model:
+True
+A_target:
+True
+
+Q: True and not ( True or False ) is
+A_model:
+False
+A_target:
+False
+
+Q: not ( False and True ) and True is
+A_model:
+True
+A_target:
+True
+
+Q: not ( True and True ) or False is
+A_model:
+False
+A_target:
+False
+
+Q: False or not True and not not False is
+A_model:
+False
+A_target:
+False
+
+Q: not True and False or False and False is
+A_model:
+True
+A_target:
+False
+
+Q: not True or True and False or False is
+A_model:
+False
+A_target:
+False
+
+Q: ( not ( False ) and False ) is
+A_model:
+False
+A_target:
+False
+
+Q: False or ( True and not True ) is
+A_model:
+False
+A_target:
+False
+
+Q: not False and not True or not True is
+A_model:
+False
+A_target:
+False
+
+Q: ( False or not not not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: ( not False ) or True and False is
+A_model:
+True
+A_target:
+True
+
+Q: ( not not True ) or not False is
+A_model:
+True
+A_target:
+True
+
+Q: True or not ( ( True ) ) is
+A_model:
+True
+A_target:
+True
+
+Q: ( False ) and False or not False is
+A_model:
+True
+A_target:
+True
+
+Q: not False and True or ( True ) is
+A_model:
+True
+A_target:
+True
+
+Q: True or not not ( not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: False and not True and False and True is
+A_model:
+False
+A_target:
+False
+
+Q: not not True and True and not True is
+A_model:
+False
+A_target:
+False
+
+Q: not False or not ( not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: not not ( True ) or not True is
+A_model:
+True
+A_target:
+True
+
+Q: ( True and not True and True ) is
+A_model:
+False
+A_target:
+False
+
+Q: True or False or not True or True is
+A_model:
+True
+A_target:
+True
+
+Q: not True or True and False and False is
+A_model:
+False
+A_target:
+False
+
+Q: True and not not not not not True is
+A_model:
+True
+A_target:
+False
+
+Q: not True and ( False ) and False is
+A_model:
+False
+A_target:
+False
+
+Q: False and False or not True and False is
+A_model:
+True
+A_target:
+False
+
+Q: True or False and not True and False is
+A_model:
+True
+A_target:
+True
+
+Q: not ( False or False or True ) is
+A_model:
+False
+A_target:
+False
+
+Q: not False or True or True and False is
+A_model:
+True
+A_target:
+True
+
+Q: not False and False or False or False is
+A_model:
+False
+A_target:
+False
+
+Q: ( not True ) and ( False ) is
+A_model:
+False
+A_target:
+False
+
+Q: True and not not False and not False is
+A_model:
+True
+A_target:
+False
+
+Q: not ( not not False ) and True is
+A_model:
+False
+A_target:
+True
+
+Q: not ( not False ) and not False is
+A_model:
+False
+A_target:
+False
+
+Q: False or True and not False or True is
+A_model:
+True
+A_target:
+True
+
+Q: ( not not not True and True ) is
+A_model:
+False
+A_target:
+False
+
+Q: False and not ( True ) or True is
+A_model:
+True
+A_target:
+True
+
+Q: ( not True and False or True ) is
+A_model:
+True
+A_target:
+True
+
+Q: not ( not not True ) or False is
+A_model:
+True
+A_target:
+False
+
+Q: ( not False ) or ( False ) is
+A_model:
+True
+A_target:
+True
+
+Q: not not not False and True and False is
+A_model:
+False
+A_target:
+False
+
+Q: True or not True or not not True is
+A_model:
+True
+A_target:
+True
+
+Q: not False or not not False and False is
+A_model:
+True
+A_target:
+True
+
+Q: not False and ( False or False ) is
+A_model:
+False
+A_target:
+False
+
+Q: False and True or ( not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: False and not False and ( False ) is
+A_model:
+False
+A_target:
+False
+
+Q: not ( ( False and True ) ) is
+A_model:
+True
+A_target:
+True
+
+Q: False or ( not False ) and False is
+A_model:
+True
+A_target:
+False
+
+Q: False and not False or False and True is
+A_model:
+False
+A_target:
+False
+
+Q: not False and not not True and True is
+A_model:
+True
+A_target:
+True
+
+Q: True and True or False and not True is
+A_model:
+True
+A_target:
+True
+
+Q: not True or False and True or False is
+A_model:
+True
+A_target:
+False
+
+Q: True or False or not True and True is
+A_model:
+True
+A_target:
+True
+
+Q: False or False or not True or False is
+A_model:
+False
+A_target:
+False
+
+Q: False or False or True and not False is
+A_model:
+True
+A_target:
+True
+
+Q: ( not ( True or False ) ) is
+A_model:
+False
+A_target:
+False
+
+Q: not False and False or True and True is
+A_model:
+True
+A_target:
+True
+
+Q: True and False or ( not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: not False or not not not not True is
+A_model:
+True
+A_target:
+True
+
+Q: True and ( not ( True ) ) is
+A_model:
+False
+A_target:
+False
+
+Q: True and False and not True or False is
+A_model:
+False
+A_target:
+False
+
+Q: ( ( not False ) ) and True is
+A_model:
+True
+A_target:
+True
+
+Q: not ( True ) and ( False ) is
+A_model:
+False
+A_target:
+False
+
+Q: True or not False and False and False is
+A_model:
+True
+A_target:
+True
+
+Q: True and not ( False or False ) is
+A_model:
+True
+A_target:
+True
+
+Q: not True and False or False and True is
+A_model:
+True
+A_target:
+False
+
+Q: not True or not False and not True is
+A_model:
+True
+A_target:
+False
+
+Q: not True or False or True and True is
+A_model:
+True
+A_target:
+True
+
+Q: not True and True and False and True is
+A_model:
+False
+A_target:
+False
+
+Q: False and False or not True and True is
+A_model:
+False
+A_target:
+False
+
+Q: ( not False or False and True ) is
+A_model:
+True
+A_target:
+True
+
+Q: ( True or False ) or not True is
+A_model:
+True
+A_target:
+True
+
+Q: not not not ( False ) and False is
+A_model:
+ Remember that (i) expressions inside brackets are always evaluated first and that (ii) the order of operations from highest priority to lowest priority is "not", "and", "or", respectively.
+We first simplify this expression "Z" as follows: "Z = not not not ( False ) and False = not not not ( A ) and False" where "A = False".
+Let's evaluate A: A = False.
+Plugging in A, we get: Z = not not not ( A ) and False = not not not (False) and False = not not not False and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True and False = not not True
+A_target:
+False
+
+Q: not False and False and False and True is
+A_model:
+False
+A_target:
+False
+
+Q: False and not True and True or False is
+A_model:
+True
+A_target:
+False
+
+Q: ( False or not False and False ) is
+A_model:
+True
+A_target:
+False
+
+Q: False or ( False or not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: not False or True or False and False is
+A_model:
+True
+A_target:
+True
+
+Q: True or ( not False ) or True is
+A_model:
+True
+A_target:
+True
+
+Q: not False and False or True or False is
+A_model:
+True
+A_target:
+True
+
+Q: False and not ( not not False ) is
+A_model:
+False
+A_target:
+False
+
+Q: not not ( not True ) or False is
+A_model:
+True
+A_target:
+False
+
+Q: False and not True and True and False is
+A_model:
+False
+A_target:
+False
+
+Q: True or False and not ( True ) is
+A_model:
+False
+A_target:
+True
+
+Q: not ( False ) and ( True ) is
+A_model:
+True
+A_target:
+True
+
+Q: False and not ( ( True ) ) is
+A_model:
+False
+A_target:
+False
+
+Q: not False or ( not not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: ( ( not False ) and False ) is
+A_model:
+False
+A_target:
+False
+
+Q: True or False and not False and True is
+A_model:
+True
+A_target:
+True
+
+Q: ( ( not True and True ) ) is
+A_model:
+False
+A_target:
+False
+
+Q: not ( False ) or not not False is
+A_model:
+True
+A_target:
+True
+
+Q: not ( False or False and False ) is
+A_model:
+True
+A_target:
+True
+
+Q: False and not ( not not True ) is
+A_model:
+False
+A_target:
+False
+
+Q: False and False and not ( True ) is
+A_model:
+False
+A_target:
+False
+
+Q: False or ( not False and False ) is
+A_model:
+True
+A_target:
+False
+
+Q: False or ( not not not True ) is
+A_model:
+False
+A_target:
+False
+
+Q: ( not False ) or not not False is
+A_model:
+True
+A_target:
+True
+
+Q: not False and False and True or False is
+A_model:
+True
+A_target:
+False
+
+Q: True or not False and ( False ) is
+A_model:
+True
+A_target:
+True
+
+Q: ( not ( False ) ) or False is
+A_model:
+True
+A_target:
+True
+
+Q: True and not True or False and True is
+A_model:
+False
+A_target:
+False
+
+Q: not ( not not not not False ) is
+A_model:
+True
+A_target:
+True
+
+Q: True and ( not True or False ) is
+A_model:
+True
+A_target:
+False
+
+Q: ( not not not False or True ) is
+A_model:
+True
+A_target:
+True
+

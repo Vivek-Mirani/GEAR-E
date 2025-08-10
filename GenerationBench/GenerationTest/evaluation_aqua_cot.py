@@ -46,43 +46,6 @@ class EvaluationResults(DataClassJsonMixin):
     samples: list[EvaluationSample]
     metrics: EvaluationMetrics 
 
-
-def extract_bbh_ans(ans, mode):
-    ans = ans.split('\nQuestion:')[0].strip().strip(".")
-    ans_line = ans.split('answer is ')
-    # Expect to see 'answer is'. If not return whole string
-    if len(ans_line) == 1:
-        return ans
-    else:
-        ans = ans_line[-1].strip()
-    
-    if mode == 'multiple_choice':
-        # options = ['A.', 'B.', 'C.', 'D.', 'E.', 'F.', 'G.', 'H.', 'I.', 'J.', 'K.', 'L.', 'M.', 'N.', 'O.', 'P.', 'Q.', 'R.', 'S.', 'T.', 'U.', 'V.', 'W.', 'X.', 'Y.', 'Z.']
-        options = ['(A)', '(B)', '(C)', '(D)', '(E)', '(F)', '(G)', '(H)', '(I)', '(J)', '(K)', '(L)', '(M)', '(N)', '(O)', '(P)', '(Q)', '(R)', '(S)', '(T)', '(U)', '(V)', '(W)', '(X)', '(Y)', '(Z)']
-        for option in options:
-            if option in ans:
-                # ans = option[0]
-                ans = option
-                break
-        return ans
-    elif mode == 'free_form':
-        if ans[-1] == '.' and len(ans)>1:
-            ans = ans[:-1]
-        return ans
-
-def extract_ans_mmlu(ans_model):
-    ans_model = ans_model.split('\n')
-    ans = []
-    residual = []
-    for li, al in enumerate(ans_model):
-        ans.append(al)
-        if('answer is' in al):
-            break
-    residual = list(ans_model[li + 1:])
-    ans = '\n'.join(ans)
-    residual = '\n'.join(residual)
-    return ans, residual
-
 def load_model_tokenizer(args):
     from GEARLM import CompressionConfig,SimulatedGearLlamaForCausalLM,SimulatedGearMistralForCausalLM
     model_kwargs = {}
@@ -161,35 +124,6 @@ def load_head_config(head_config_input):
     else:
         raise ValueError(f"Unexpected input {head_config_input}")
     return head_config
-
-
-def prepare_bbh_example_prompt_with_cot(example, prompt_cot):
-    question = example['input'] + '\n'
-    for letter in ['A', 'B', 'C', 'D']:
-        question += '(' + letter + ') ' + example[letter] + ' '
-    question += "\nA: Let's think step by step."  
-    prompt = prompt_cot + "\n\n" + question
-    example['question'] = question 
-    example['prompt'] = prompt
-    return example
-
-def prepare_bbh_example_prompt(examples):
-    questions = []
-    num_example = len(examples['input'])
-    for idx in range(num_example):
-        question = examples['input'][idx] + '\n'
-        for letter in ['A', 'B', 'C', 'D']:
-            question += '(' + letter + ') ' + examples[letter][idx] + ' '
-        question += "\nA: Let's think step by step."  
-        questions.append(question)
-    examples['question'] = questions
-    return examples
-
-def prepare_bbh_question(question):
-    options = ['(A)', '(B)', '(C)', '(D)', '(E)', '(F)', '(G)', '(H)', '(I)', '(J)', '(K)', '(L)', '(M)', '(N)', '(O)', '(P)', '(Q)', '(R)', '(S)', '(T)', '(U)', '(V)', '(W)', '(X)', '(Y)', '(Z)']
-    for option in options:
-        question = question.replace(option, option[1]+'.')
-    return question
 
 def preprocess_aqua_dataset(dataset):
     def add_text_options(example):
@@ -364,7 +298,7 @@ if __name__ == '__main__':
     all_samples = []
     # prompt_prefix = f""
     with open(args.prompt_file, "r") as f:
-        prompt_prefix = f.read()
+        prompt_prefix = f.read() #+ "\nanswer the question through the form of The answer is xxx. Do not generate others."
     for batch in tqdm(dataloader, desc=f"Evaluate {args.dataset_split}"):
         questions = batch["question"]
         prompts, targets = prepare_aqua_cot_prompts_and_targets(batch, prompt_prefix)
@@ -429,6 +363,7 @@ if __name__ == '__main__':
 
         for question, generation, target, substring in zip(prompts, generations, targets, emphasize_substrings):
             pred, label, is_pred_true = evaluate_aqua_answer_cot(generation, target, question)
+            # print(f"Question: '{question}'\nGeneration: '{generation}'\nTarget: '{target}'\nSubstring: '{substring}'\nPred: '{pred}'\nLabel: '{label}'\nIs_pred_true: '{is_pred_true}'")
             if is_pred_true: 
                 total_acc += 1
 

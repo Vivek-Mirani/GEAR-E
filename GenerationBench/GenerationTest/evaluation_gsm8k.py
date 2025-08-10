@@ -62,6 +62,7 @@ class EvaluationResults(DataClassJsonMixin):
 
 def evaluate_pred_answer(pred_str, ans_str):
     pattern = "\d*\.?\d+"
+    # print("Predicted: ", pred_str, "\n\nGround Truth: ", ans_str, "\n")
     pred_str, ans_str = pred_str.replace(",", ""), ans_str.replace(",", "")
     pred_list = re.findall(pattern, pred_str)
     gold_list = re.findall(pattern, ans_str)
@@ -150,6 +151,7 @@ def parse_pred_ans(filename):
     return questions, ans_pred, ans_gold
 def evaluate_pred_answer(pred_str, ans_str):
     pattern = "\d*\.?\d+"
+    # print("Predicted: ", pred_str, "\n\nGround Truth: ", ans_str, "\n")
     pred_str, ans_str = pred_str.replace(",", ""), ans_str.replace(",", "")
     pred_list = re.findall(pattern, pred_str)
     gold_list = re.findall(pattern, ans_str)

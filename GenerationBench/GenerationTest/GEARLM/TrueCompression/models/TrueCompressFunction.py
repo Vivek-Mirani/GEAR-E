@@ -16,6 +16,7 @@ def transfer_8bit_to_4bit(input: torch.Tensor):
 
 
 def transfer_4bit_to_8bit(input: torch.Tensor):
+    # print(input.dtype)
     # shape
     assert input.dtype == torch.uint8
     size = input.shape

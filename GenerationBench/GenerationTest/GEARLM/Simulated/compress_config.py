@@ -278,7 +278,9 @@ class CompressionConfig(dict):
                 )
 
     def calculate_compress_ratio_total(self):
-        return sum(self.compress_ratio_list) / len(self.compress_ratio_list)
+        if len(self.compress_ratio_list)!=0:
+            return sum(self.compress_ratio_list) / len(self.compress_ratio_list)
+        return None
 
     def __str__(self):
         return f"compress_method:{self.compress_method},\nquantize_bit:{self.quantize_bit},\nrank:{self.rank},\nloop:{self.loop},\ndevice_num:{self.device_num},\ncompressratio:{self.compress_ratio_list},\ncompressratio_total:{self.calculate_compress_ratio_total()}"

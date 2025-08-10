@@ -39,13 +39,13 @@ decompress_function = {
 
 class StreamCompressedUnion:
     def __init__(self, compress_kwargs: Optional[Dict[str, Any]] = None):
-        self.quantize_bit = compress_kwargs["quantize_bit"]
-        self.compress_mode = compress_kwargs["compress_mode"]
+        self.quantize_bit = compress_kwargs.quantize_bit[0]
+        self.compress_mode = compress_kwargs.compress_method[0]
         self.min = None
         self.step = None
-        self.left = compress_kwargs["left"]
-        self.rank = compress_kwargs["rank"]
-        self.loop = compress_kwargs["loop"]
+        self.left = compress_kwargs.left[0]
+        self.rank = compress_kwargs.rank[0]
+        self.loop = compress_kwargs.loop[0]
         self.dtype = None
         self.shape = None
         self.is_compressed = False
@@ -55,7 +55,7 @@ class StreamCompressedUnion:
         self.p_base = None
         self.q_base = None
         self.counter = 0
-        self.gap = compress_kwargs["streaming_gap"]
+        self.gap = compress_kwargs.streaming_gap[0]
         self.cache_shape = None
         self.buffer = None
         self.cache_shape = None
@@ -93,10 +93,12 @@ class StreamCompressedUnion:
             return self.decompress(True)
 
     def compress(self):
-
+        # print("compressing")
         input = self.cache
         self.dtype = input.dtype
+        # print(self.dtype)
         self.is_compressed = True
+        # print(self.compress_/mode)
         if self.counter == 0 or self.counter % self.gap == 0:
             if self.compress_mode == "uniform":
                 output, shape, min, step = compress_function[self.compress_mode](
@@ -171,6 +173,7 @@ class StreamCompressedUnion:
     def decompress(self, flag=False):
         self.is_compressed = flag
         # print("decompress",self.counter)
+        # print(self.quantize_bit)
         # print(self.cache.dtype)
         if self.compress_mode == "uniform":
             output = decompress_function[self.compress_mode](
@@ -238,6 +241,8 @@ class StreamCompressedUnion:
                 self.p_base,
                 self.q_base,
             )
+        else:
+            output = None
         # self.clean_cache()
         if self.buffer is not None:
             output = torch.cat([output, self.buffer], dim=2)
@@ -314,6 +319,8 @@ class StreamCompressedCache(Cache):
         layer_idx: int,
         compress_kwargs: Optional[Dict[str, Any]] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor]:
+
+        # print("Uses update of streaming_cache_utils.")
         """
         Updates the cache with the new `key_states` and `value_states` for the layer `layer_idx`.
 
@@ -335,10 +342,11 @@ class StreamCompressedCache(Cache):
             self.seen_tokens += key_states.shape[-2]
         # print(isinstance(key_states, Cache))
         # Update the cache
+        # print("key_cache_len",len(self.key_cache))
         if len(self.key_cache) <= layer_idx:
             # apply compress here if needed
             if compress_kwargs is not None:
-
+                # print(compress_kwargs)
                 key_union = StreamCompressedUnion(compress_kwargs)
                 value_union = StreamCompressedUnion(compress_kwargs)
                 key_union.set_cache(key_states)
@@ -355,8 +363,12 @@ class StreamCompressedCache(Cache):
                 if key_union.is_compressed and value_union.is_compressed:
                     previous_key = key_union.decompress()
                     previous_value = value_union.decompress()
-                key_union.set_cache(torch.cat([previous_key, key_states], dim=-2))
-                value_union.set_cache(torch.cat([previous_value, value_states], dim=-2))
+                if previous_key is not None and previous_value is not None:
+                    key_union.set_cache(torch.cat([previous_key, key_states], dim=-2))
+                    value_union.set_cache(torch.cat([previous_value, value_states], dim=-2))
+                else:
+                    key_union.set_cache(key_states)
+                    value_union.set_cache(value_states)
             else:
                 self.key_cache[layer_idx] = torch.cat(
                     [self.key_cache[layer_idx], key_states], dim=-2
@@ -365,6 +377,7 @@ class StreamCompressedCache(Cache):
                     [self.value_cache[layer_idx], value_states], dim=-2
                 )
         if compress_kwargs is not None:
+            # print(key_union.get_cache().shape, value_union.get_cache().shape)
             return key_union.get_cache(), value_union.get_cache()
         else:
             return self.key_cache[layer_idx], self.value_cache[layer_idx]
